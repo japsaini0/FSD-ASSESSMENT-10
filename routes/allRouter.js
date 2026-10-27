@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Registration = require('../models/RegistrationModel');
+const Registration = require('../models/Registration');
 
 function computeFinalAmount(ticketPrice, discountCode) {
+
     if (!discountCode) return ticketPrice;
     if (discountCode === 'CAMPUS50') return ticketPrice * 0.5;
     if (discountCode === 'EARLYBIRD') return Math.max(ticketPrice - 100, 0);
@@ -11,7 +12,8 @@ function computeFinalAmount(ticketPrice, discountCode) {
 }
 
 
-router.post('/registrations', async function (req, res) {
+router.post('/registrations', async (req, res) => {
+
     try {
         var body = req.body;
 
@@ -39,7 +41,8 @@ router.post('/registrations', async function (req, res) {
     }
 });
 
-router.get('/registrations', async function (req, res) {
+router.get('/registrations', async (req, res) => {
+
     try {
         var filter = {};
         if (req.query.eventType) filter.eventType = req.query.eventType;
@@ -52,7 +55,8 @@ router.get('/registrations', async function (req, res) {
     }
 });
 
-router.get('/registrations/:id', async function (req, res) {
+router.get('/registrations/:id', async (req, res) => {
+
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ success: false, message: 'Invalid registration ID format' });
@@ -64,7 +68,9 @@ router.get('/registrations/:id', async function (req, res) {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
-router.put('/registrations/:id', async function (req, res) {
+
+router.put('/registrations/:id', async (req, res) => {
+
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ success: false, message: 'Invalid registration ID format' });
@@ -109,7 +115,8 @@ router.put('/registrations/:id', async function (req, res) {
     }
 });
 
-router.delete('/registrations/:id', async function (req, res) {
+router.delete('/registrations/:id', async (req, res) => {
+
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ success: false, message: 'Invalid registration ID format' });

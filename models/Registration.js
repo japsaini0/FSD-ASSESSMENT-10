@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 
-const registrationSchema = new mongoose.Schema({
+const registrationDataSchema = new mongoose.Schema({
     studentName: { type: String, required: true, minlength: 3, maxlength: 50, trim: true },
+    
     collegeEmail: {
         type: String, required: true, trim: true, unique: true, lowercase: true,
         match: [/^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+(edu|ac\.in)$/, 'Must be a valid college email ending in .edu or .ac.in']
     },
+
     rollNumber: {
         type: String, required: true, minlength: 8, maxlength: 10, uppercase: true,
         match: [/^[A-Z0-9]{8,10}$/, 'Must be alphanumeric and between 8 to 10 characters long.'],
     },
+
     eventType: {
         type: String,
         enum: ["CODING_HACKATHON", "AI_WORKSHOP", "ROBOTICS", "GAMING"],
         required: true
     },
+
     teamSize: {
         type: Number, min: 1, max: 4, required: true,
         validate: {
@@ -25,6 +29,7 @@ const registrationSchema = new mongoose.Schema({
             message: 'AI Workshop only permits individual registrations'
         }
     },
+
     ticketPrice: { type: Number, required: true, min: 0 },
     discountCode: { type: String, uppercase: true, trim: true },
     finalAmount: { type: Number },
@@ -38,4 +43,4 @@ const registrationSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Registration', registrationSchema);
+module.exports = mongoose.model('Registration', registrationDataSchema);
